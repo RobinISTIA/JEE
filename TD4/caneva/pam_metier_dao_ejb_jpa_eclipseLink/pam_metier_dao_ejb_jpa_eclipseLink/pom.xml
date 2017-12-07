@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- artifact -->
+<modelVersion>4.0.0</modelVersion> 
+<groupId>istia</groupId> 
+<artifactId>pam_metier_dao_ejb_jpa_eclipseLink</artifactId> 
+<version>1.0-SNAPSHOT</version> 
+<packaging>jar</packaging> 
+<name>pam_metier_dao_ejb_jpa_eclipseLink</name>
+
+<dependencies>
+<!-- eclipselink --> 
+<dependency>
+<groupId>org.eclipse.persistence</groupId> 
+<artifactId>eclipselink</artifactId> 
+<version>2.6.3</version>
+</dependency> 
+<!-- mysql --> 
+<dependency>
+<groupId>mysql</groupId> 
+<artifactId>mysql-connector-java</artifactId> 
+<version>5.1.39</version>
+</dependency> 
+<!-- JUnit --> 
+<dependency>
+<groupId>junit</groupId> 
+<artifactId>junit</artifactId> 
+<version>4.12</version> 
+<scope>test</scope>
+</dependency> 
+<!-- OpenEJB --> 
+<dependency>
+<groupId>org.apache.openejb</groupId> 
+<artifactId>openejb-core</artifactId> 
+<version>4.7.4</version>
+</dependency>
+<!-- interfaces swing --> 
+<dependency>
+<groupId>org.swinglabs</groupId> 
+<artifactId>swing-layout</artifactId> 
+<version>1.0.3</version>
+</dependency> 
+</dependencies>
+<properties> 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+    <maven.compiler.source>1.8</maven.compiler.source> 
+    <maven.compiler.target>1.8</maven.compiler.target>
+</properties> 
+    <build>
+    <!-- plugins eclipselink -->
+    <plugins>
+    <!--[https://flexguse.wordpress.com/2013/08/10/maven-spring-data-jpa-eclipselink-and-static-weaving/] -->
+    <!-- This plugin ensures the EclipseLink static weaving -->
+    <plugin>
+    <artifactId>staticweave-maven-plugin</artifactId>
+    <groupId>de.empulse.eclipselink</groupId>
+    <version>1.0.0</version>
+    <executions>
+    <execution>
+    <goals>
+    <goal>weave</goal>
+    </goals>
+    <phase>process-classes</phase>
+    <configuration>
+    <logLevel>ALL</logLevel>
+    <includeProjectClasspath>true</includeProjectClasspath>
+    </configuration>
+    </execution>
+    </executions>
+    <dependencies>
+    <dependency>
+    <groupId>org.eclipse.persistence</groupId>
+    <artifactId>eclipselink</artifactId>
+    <version>2.6.3</version>
+    </dependency>
+    </dependencies>
+</plugin>
+</plugins>
+ </build>
+</project>

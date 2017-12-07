@@ -1,0 +1,5 @@
+dao/PersonDao.class
+jpa/Person.class
+dao/IPersonDaoRemote.class
+dao/IPersonDao.class
+dao/IPersonDaoLocal.class

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+  <!-- dao -->
+  <bean id="employeDao" class="dao.EmployeDao"/>
+  <bean id="indemniteDao" class="dao.IndemniteDao"/>
+  <bean id="cotisationDao" class="dao.CotisationDao"/>
+  <!-- métier -->
+  <bean id="metier" class="metier.Metier">
+    <property name="employeDao" ref="employeDao"/>
+    <property name="cotisationDao" ref="cotisationDao"/>  
+  </bean>
+  <!-- configuration JPA -->
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="jpaVendorAdapter">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+      </bean>
+    </property>
+<!--    <property name="jpaProperties">
+      <props>
+        <prop key="javax.persistence.schema-generation.database.action">drop-and-create</prop>
+        <prop key="hibernate.show_sql">TRUE</prop>
+        <prop key="hibernate.format_sql">TRUE</prop>
+        <prop key="use_sql_comments">TRUE</prop>
+      </props>
+    </property>            -->
+    <property name="loadTimeWeaver">
+      <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+    </property>
+  </bean>
+  <!-- la source de donnéees DBCP -->
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/dbpam_hibernate"/>
+    <property name="username" value="root"/>
+    <property name="password" value=""/>
+  </bean>
+  <!-- le gestionnaire de transactions -->
+  <tx:annotation-driven transaction-manager="txManager"/>
+  <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+  </bean>
+  <!-- traduction des exceptions -->
+  <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+  <!-- persistence -->
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+</beans>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+  <h:head>
+    <title>Historique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <h:outputStylesheet library="css" name="styles.css"/>
+  </h:head>
+  <h:body style="background-image: url('${request.contextPath}/resources/images/standard.jpg');">
+    <h:form id="formulaire">
+      <h:dataTable value="#{form.history}" var="historyEntry">
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.rank']}"/>
+            </f:facet>
+            <h:outputText value="#{historyEntry.rank}"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.name']}"/>
+            </f:facet>
+            <h:outputText value="#{historyEntry.name}"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.jours']}"/>
+            </f:facet>
+            <h:outputText value="#{historyEntry.jours}"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.heures']}"/>
+            </f:facet>
+            <h:outputText value="#{historyEntry.heures}"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.salaire']}"/>
+            </f:facet>
+            <h:outputText value="#{historyEntry.salaireNet}"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{msg['history.headers.retirer']}"/>
+            </f:facet>
+            <h:commandLink value="Retirer" action="#{form.removeElement}">
+              <f:setPropertyActionListener target="#{form.removeRank}" value="#{historyEntry.rank}"/>
+            </h:commandLink>
+          </h:column>
+        </h:dataTable>
+    </h:form>
+  </h:body>
+</html>

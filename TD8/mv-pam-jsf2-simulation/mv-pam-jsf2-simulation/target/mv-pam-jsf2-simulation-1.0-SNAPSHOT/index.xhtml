@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+  <f:view locale="#{changeLocale.locale}">    
+    <h:head>
+        <title>JSF</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    <script type="text/javascript">
+      function raz(){
+        document.forms['formulaire'].elements['formulaire:heures'].value="";
+        document.forms['formulaire'].elements['formulaire:jours'].value="";
+        document.forms['formulaire'].elements['formulaire:selectOneListBox1'].value="0";
+        document.forms['formulaire'].submit();
+      }
+    </script>
+
+    </h:head>
+    <h:body style="background-image: url('${request.contextPath}/resources/images/standard.jpg');">
+      <h:form id="haut">
+        <h:panelGrid columns="2">
+          <h:commandLink value="#{msg['welcome.langue1']}" action="#{changeLocale.setFrenchLocale}"/>
+          <h:commandLink value="#{msg['welcome.langue2']}" action="#{changeLocale.setEnglishLocale}"/>
+          <h:commandLink value="#{msg['welcome.histo']}" action="historique"/>
+        </h:panelGrid>
+      </h:form>
+        
+        <h:form id="formulaire">
+        <h1> <h:outputText value="#{msg['form.titre']}"/> </h1>
+        <h:panelGrid columnClasses="col1,col2,col3,col1,col2" columns="5" border="1">
+          <!-- ligne 1: entêtes -->
+          <h:outputText value="#{msg['form.comboEmployes.libelle']}" styleClass="libelle"/>
+          <h:outputText value="#{msg['form.heuresTravaillees.libelle']}" styleClass="libelle"/>
+          <h:outputText value="#{msg['form.joursTravailles.libelle']}" styleClass="libelle"/>
+          <h:outputText value="" styleClass="libelle"/>
+          <h:outputText value="" styleClass="libelle"/>
+          <!-- ligne 2 : menu,saisies, boutons -->
+          <h:selectOneMenu id="selectOneListBox1" value="#{form.ss}">
+              <f:selectItems value="#{form.SSandNames}" />
+          </h:selectOneMenu>
+          <h:inputText id="heures" value="#{form.heures}" required="true" requiredMessage="#{msg['form.heuresTravailles.required']}" converterMessage="#{msg['form.heuresTravailles.validation']}"/>
+          <h:inputText id="jours" value="#{form.jours}" required="true" requiredMessage="#{msg['form.joursTravailles.required']}" converterMessage="#{msg['form.joursTravailles.validation']}"/>
+          <h:commandButton id="submit" value="#{msg['form.btnSalaire.libelle']}" action="#{form.calculerSalaire}"/>
+          <h:commandButton id="raz" onclick="raz()" value="#{msg['form.btnRaz.libelle']}" immediate="true" action="#{form.raz}"/>
+          <!-- ligne 3:errors -->
+          <h:inputHidden value="nothing"/> <!-- Nothing -->
+          <h:message for="heures" styleClass="error"/>
+          <h:message for="jours" styleClass="error"/>
+        </h:panelGrid>
+        <f:subview id="viewInfo" rendered="#{form.viewInfosIsRendered}" >
+        <h1> <h:outputText value="#{msg['form.infos.employe']}" styleClass="titreInfos"/> </h1>
+                <h:panelGrid columnClasses="col1,col2,col3" columns="3" border="1">
+                <!-- ligne 1-2: entêtes et valeurs -->
+                <h:outputText value="#{msg['form.employe.nom']}" styleClass="libelle"/>
+                <h:outputText value="#{msg['form.employe.prenom']}" styleClass="libelle"/>
+                <h:outputText value="#{msg['form.employe.adresse']}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.nom}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.prenom}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.adresse}" styleClass="libelle"/>
+                <!-- ligne 3-4: entêtes et valeurs -->
+                <h:outputText value="#{msg['form.employe.ville']}" styleClass="libelle"/>
+                <h:outputText value="#{msg['form.employe.codePostal']}" styleClass="libelle"/>
+                <h:outputText value="#{msg['form.employe.indice']}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.ville}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.cp}" styleClass="libelle"/>
+                <h:outputText value="#{form.feuilleSalaire.employe.indemniteId.indice}" styleClass="libelle"/>
+                </h:panelGrid>
+                <h:outputText value="#{msg['form.salaire.net']}: " styleClass="libelle"/>
+                <h:outputFormat value="#{form.feuilleSalaire.elementsSalaire.salaireNet}"/>
+                <!-- 
+                <h:outputFormat value="{0,number,currency}">
+                    <f:param value="#{form.feuilleSalaire.elementsSalaire.salaireNet}"/>
+                </h:outputFormat>
+                -->
+        </f:subview>
+        
+        </h:form>
+    </h:body>
+  </f:view>
+</html>
+
